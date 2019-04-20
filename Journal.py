@@ -1,15 +1,17 @@
 # Victor Jose Novaes Pires
-# 2019-01-25
+# Version 2.0 -- 2019-04-20
+# Version 1.0 -- 2019-01-25
 
-import os, re, subprocess
+import re, subprocess
 from datetime import datetime, timedelta
+from os.path import expanduser, isdir, isfile
 
 jan_1_2000 = datetime(2000, 1, 1) # Jan 1st of a leap year
-leap_year_days = 366
+days_in_leap_year = 366
 
 def main():
     print(">>>>> Journal: One paragraph a day memory book <<<<<")
-    path = f"{os.path.expanduser('~')}/Documents/Journal"
+    path = f"{expanduser('~')}/Documents/Journal"
 
     journal = check_files_and_folders(path)
     if not journal:
@@ -41,9 +43,9 @@ def main():
 
 
 def check_files_and_folders(path):
-    if not os.path.isdir(path):
+    if not isdir(path):
         return False
-    if not os.path.isfile(f"{path}/Journal.tex"):
+    if not isfile(f"{path}/Journal.tex"):
         return False
     if not check_all_days(path):
         return False
@@ -51,14 +53,12 @@ def check_files_and_folders(path):
 
 
 def check_all_days(path):
-    num_days = []
-    for i in range(leap_year_days):
+    for i in range(days_in_leap_year):
         date = jan_1_2000 + timedelta(i)
-        isfile = os.path.isfile(f"{path}/{date.strftime('%m-%b')}/"
-                                f"{date.strftime('%b-%d')}.tex")
-        num_days.append(isfile)
-    if sum(num_days) != leap_year_days:
-        return False
+        exists = isfile(f"{path}/{date.strftime('%m-%b')}/"
+                        f"{date.strftime('%b-%d')}.tex")
+        if exists == False:
+            return False
     return True
 
 
@@ -99,7 +99,7 @@ def make_main_file(path):
         journal.write(r"\pagestyle{plain}" + '\n')
         journal.write(r"\tableofcontents" + '\n')
         # Links to the daily files
-        for i in range(leap_year_days):
+        for i in range(days_in_leap_year):
             date = jan_1_2000 + timedelta(i)
             fpath = (f"{path}/{date.strftime('%m-%b')}/"
                      f"{date.strftime('%b-%d')}.tex")
@@ -115,7 +115,7 @@ def make_folders(path):
 
 
 def make_daily_files(path):
-    for i in range(leap_year_days):
+    for i in range(days_in_leap_year):
         date = jan_1_2000 + timedelta(i)
         fpath = f"{path}/{date.strftime('%m-%b')}/{date.strftime('%b-%d')}.tex"
         run(f"touch {fpath}")
@@ -144,10 +144,67 @@ def is_date(text):
 
 def save_paragraph(path, date, paragraph):
     fpath = f"{path}/{date.strftime('%m-%b')}/{date.strftime('%b-%d')}.tex"
-    with open(fpath, 'a') as f:
-        section = date.strftime('%Y - %A')
-        f.write(''.join([r"\subsection*{", section, "}\n"]))
-        f.write(paragraph + '\n\n')
+    content = file_to_list(fpath)
+    previous_entries = check_previous_entries(content)
+    line_number = get_line_number(content,
+                                  previous_entries,
+                                  this_year=int(date.strftime('%Y')))
+    new_content = make_new_content(content, date, paragraph, line_number)
+    save_to_file(fpath, new_content)
+
+
+def file_to_list(fpath):
+    with open(fpath, 'r') as f:
+        return f.readlines()
+
+
+def check_previous_entries(content):
+    year_regex = re.compile(r'\d{4}')
+    previous_entries = []
+    for line_number, line in enumerate(content):
+        if year_regex.search(line) is not None:
+            year = int(year_regex.search(line).group(0))
+            previous_entries.append([line_number, year])
+    return previous_entries
+
+
+def get_line_number(content, previous_entries, this_year):
+    # No previous entries
+    if len(previous_entries) == 0:
+        return len(content)
+    # Bigger than or equal to the last year
+    if this_year >= previous_entries[-1][1]:
+        return len(content)
+    # Smaller than the first year
+    if this_year < previous_entries[0][1]:
+        return previous_entries[0][0]
+    # Entry between previous years
+    return get_line_in_between(previous_entries, this_year)
+
+
+def get_line_in_between(previous_entries, this_year):
+    line_numbers, years = [], []
+    for pair in previous_entries:
+        line_numbers.append(pair[0])
+        years.append(pair[1])
+    if this_year in years:
+        print('\n>>> WARNING: There is an entry on this date already!')
+    for line_number, previous_year in zip(line_numbers, years):
+        if this_year < previous_year:
+            return line_number
+
+
+def make_new_content(content, date, paragraph, line_number):
+    new_content = content.copy()
+    section = date.strftime('%Y - %A')
+    new_content.insert(line_number, ''.join([r"\subsection*{", section, "}\n"]))
+    new_content.insert((line_number + 1), (paragraph + '\n\n'))
+    return new_content
+
+
+def save_to_file(fpath, content):
+    with open(fpath, 'w') as f:
+        f.writelines(content)
 
 
 if __name__ == '__main__':

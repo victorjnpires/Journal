@@ -4,6 +4,15 @@ Journal: One paragraph a day memory book
 Write your thoughts and/or memories one paragraph a day and read the entries for the same day on previous years.
 
 
+## Changelog
+
+#### Version 2.0 (2019-04-20)
+New entries are automatically sorted by year.
+
+#### Version 1.0 (2019-01-25)
+First release of the program.
+
+
 ## Requirements
 
 * Python >= 3.6
@@ -101,6 +110,8 @@ If you don’t confirm no changes will be made to the Journal.
 ### Adding an entry for other days
 
 To add an entry for a day other than today just type the desired date in the format Year-Month-Day (`YYYY-MM-DD`). The program will prompt you again for an entry on the new date and will proceed like the section `Adding an entry` above.
+
+Since version 2.0 new entries are automatically sorted by year, not just appended to the end.
 
 ```
 >>> Friday, January 25, 2019
