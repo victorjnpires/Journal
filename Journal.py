@@ -1,4 +1,5 @@
 # Victor Jose Novaes Pires
+# Version 2.1 -- 2019-04-22
 # Version 2.0 -- 2019-04-20
 # Version 1.0 -- 2019-01-25
 
@@ -70,7 +71,7 @@ def make_journal(path):
     if proceed != 'YES':
         print('\n>>> ERROR: No changes were made!')
         return False
-    print("\n>>> Making files and folders...")
+    print("\n>>> New journal")
     run(f"rm -rf {path}")
     run(f"mkdir -p {path}")
     make_main_file(path)
@@ -85,7 +86,8 @@ def run(command, path=None):
 
 def make_main_file(path):
     author = input(">> Author\n> ")
-    title = input(">> Title (Author's Journal)\n> ")
+    title = input(f">> Title ({author.split()[0]}'s Journal)\n> ")
+    print("\n>>> Making files and folders...")
     run(f"touch {path}/Journal.tex")
     with open(f"{path}/Journal.tex", 'w') as journal:
         journal.write(r"\documentclass[10pt,oneside,english]{book}" + '\n')
