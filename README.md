@@ -4,7 +4,7 @@ Journal: One paragraph a day memory book
 Write your thoughts and/or memories one paragraph a day and read the entries for the same day on previous years.
 
 
-## Changelog
+## Major releases
 
 #### Version 2.0 (2019-04-20)
 New entries are automatically sorted by year.
@@ -39,7 +39,6 @@ For a a complete TeX system:
     $ sudo apt install texlive-latex-base
 
 
-
 ## Running
 
     $ python Journal.py
@@ -69,11 +68,13 @@ If you type anything other than `YES` the program will terminate with the follow
 If you type `YES` the program will ask for and author’s name and journal title.
 
 ```
->>> Making files and folders...
+>>> New journal
 >> Author
 > Victor Jose Novaes Pires
->> Title (Author's Journal)
+>> Title (Victor's Journal)
 > Victor's Journal
+
+>>> Making files and folders...
 ```
 
 ### Adding an entry
@@ -107,11 +108,9 @@ If you don’t confirm no changes will be made to the Journal.
 >>> No changes were saved!
 ```
 
-### Adding an entry for other days
+### Adding an entry for other dates
 
-To add an entry for a day other than today just type the desired date in the format Year-Month-Day (`YYYY-MM-DD`). The program will prompt you again for an entry on the new date and will proceed like the section `Adding an entry` above.
-
-Since version 2.0 new entries are automatically sorted by year, not just appended to the end.
+To add an entry for a date other than today just type the desired date in the format Year-Month-Day (`YYYY-MM-DD`). The program will prompt you again for an entry on the new date and will proceed like the section `Adding an entry` above.
 
 ```
 >>> Friday, January 25, 2019
@@ -121,10 +120,20 @@ Since version 2.0 new entries are automatically sorted by year, not just appende
 >> This was a log day and I am almost done with my new project!   :)
 ```
 
+Since version 2.0 new entries are automatically sorted by year. Also, when entering a date, the zero in front of a day or month is now optional.
+
+```
+>>> Tuesday, April 23, 2019
+>> 2019-4-20
+
+>>> Saturday, April 20, 2019
+>> Making older entries was never so easy now that they will be sorted by year.   ^.^
+```
+
 
 ## Example
 
-Example.pdf is a file that was filled with Lorem Ipsum, pseudo-Latin text, to illustrate how the journal would look like with text after five years.
+Example.pdf is a file that was filled with Lorem Ipsum, pseudo-Latin text, to illustrate how the journal would look like with text after five years of entries.
 
 
 ## Author

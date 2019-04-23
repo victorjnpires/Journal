@@ -1,4 +1,5 @@
 # Victor Jose Novaes Pires
+# Version 2.2 -- 2019-04-23
 # Version 2.1 -- 2019-04-22
 # Version 2.0 -- 2019-04-20
 # Version 1.0 -- 2019-01-25
@@ -38,7 +39,7 @@ def main():
     print("\n>>> Building journal...")
     for _ in range(2): # Compiling twice for the table of contents
         run(f"pdflatex -synctex=1 -interaction=nonstopmode {path}/Journal.tex",
-                path=path)
+            path=path)
 
     print("\n>>> Program finished successfully!")
 
@@ -138,7 +139,7 @@ def make_daily_files(path):
 
 
 def is_date(text):
-    date_regex = re.compile(r'\d{4}-\d{2}-\d{2}')
+    date_regex = re.compile(r'\d{4}-\d{1,2}-\d{1,2}')
     if (date_regex.match(text)):
         return True
     return False
