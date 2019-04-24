@@ -1,4 +1,5 @@
 # Victor Jose Novaes Pires
+# Version 2.3 -- 2019-04-24
 # Version 2.2 -- 2019-04-23
 # Version 2.1 -- 2019-04-22
 # Version 2.0 -- 2019-04-20
@@ -40,6 +41,11 @@ def main():
     for _ in range(2): # Compiling twice for the table of contents
         run(f"pdflatex -synctex=1 -interaction=nonstopmode {path}/Journal.tex",
             path=path)
+
+    try:
+        run(f"xdg-open {path}/Journal.pdf &")
+    except:
+        print("\n>>> Couldn't display Journal.pdf")
 
     print("\n>>> Program finished successfully!")
 

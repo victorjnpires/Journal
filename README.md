@@ -86,26 +86,37 @@ After making the files and folders, and on any execution of the program hencefor
 >> Today was a good day, I have finished my Journal program and I'm ready to upload it to GitHub.   :D
 ```
 
-Once you're done with your daily paragraph it will ask you if you want to save, just press `Enter` to continue with the default option `YES`.
-
-```
->> Save? [Y/n]:
-```
-
-Once you confirm the program will compile the Journal with the new entry and it will be in `~/Documents/Journal/Journal.pdf`
-
-```
->>> Building journal...
-(...)
->>> Program finished successfully!
-```
-
-If you don’t confirm no changes will be made to the Journal.
+Once you're done with your daily paragraph it will ask you if you want to save. If you don’t confirm no changes will be made to the Journal.
 
 ```
 >> Save? [Y/n]: NO
 
 >>> No changes were saved!
+```
+
+To save just press `Enter` to continue with the default option `YES`.
+
+```
+>> Save? [Y/n]: YES
+```
+
+Once you confirm the program will compile the Journal with the new entry and it will be in `~/Documents/Journal/Journal.pdf`.
+
+```
+>>> Building journal...
+(...)
+```
+
+Once compiled the program will try opening `Journal.pdf` with your default PDF viewer. If there isn't a default PDF viewer the following message will appear:
+
+```
+>>> Couldn't display Journal.pdf
+```
+
+Regardless of the display of `Journal.pdf` after compiled the file should be in your folder and the following message will confirm that the program has run as expected:
+
+```
+>>> Program finished successfully!
 ```
 
 ### Adding an entry for other dates
